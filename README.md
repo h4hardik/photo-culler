@@ -115,18 +115,18 @@ pip install pillow
 pip install imagehash
 ```
 ## Wrong Classifications
-# Too many photos marked as blurry:
+### Too many photos marked as blurry:
 ```bash
 # Lower the threshold
 python photo_culler.py -i photos -o sorted --sharpness-threshold 25 -v
 ```
-# Missing closed-eye detection:
+### Missing closed-eye detection:
 ```bash
 # Use verbose mode to debug
 python photo_culler.py -i photos -o sorted -v
 # Check eye ratio values in output
 ```
-# Too many duplicates:
+### Too many duplicates:
 
 ```bash
 # Edit script: change hamming_distance <= 8 to <= 5
