@@ -379,6 +379,18 @@ Perfect for photographers who want a simple, local version of tools.
 
 ...
 
+# RAW Version (Professional)
+```commandline
+# Process RAW files keeping original format
+python photo_culler_raw.py -i ./raw_photos -o ./sorted_raw -v
+
+# Convert RAW to JPEG while sorting
+python photo_culler_raw.py -i ./raw_photos -o ./sorted_jpeg --convert-to-jpeg --jpeg-quality 95
+
+# Professional workflow with high standards
+python photo_culler_raw.py -i ./shoot_photos -o ./processed --sharpness-threshold 50 --convert-to-jpeg -v
+```
+
 🎉 **Happy Photo Culling!**  
 
 Transform your chaotic photo collection into an organized masterpiece! 📸✨
