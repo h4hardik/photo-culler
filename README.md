@@ -256,3 +256,129 @@ if __name__ == "__main__":
     else:
         print(f"❌ Error: {error}")
 ```
+# 🚄 Performance Tips
+## Speed Optimization
+#### 1.Reduce MediaPipe accuracy for speed:
+```python
+min_detection_confidence=0.1  # Default: 0.3
+```
+#### 2.Process images in batches:
+```python
+# Instead of processing 10,000 images at once
+find photos -name "*.jpg" | split -l 1000 - batch_
+for batch in batch_*; do
+    # Process each batch separately
+done
+
+```    
+## 🧠 Memory Management
+
+- **Large collections:** Process images in batches of 1000–2000 for efficiency.
+- **High-resolution images:** Resize images for analysis to reduce memory usage.
+- **Multiple runs:** Clear output directories before each run to avoid mixing results.
+
+## ⚖️ Quality vs Speed Trade-offs
+
+| Setting                      | Speed   | Accuracy | Recommended Use Case   |
+|------------------------------|---------|----------|-----------------------|
+| `min_detection_confidence=0.1` | Fast    | Lower    | Quick sorting         |
+| `min_detection_confidence=0.3` | Medium  | Good     | Balanced              |
+| `min_detection_confidence=0.5` | Slow    | High     | Precise sorting       |
+
+## 📊 Example Output
+### Console Output
+```commandline
+🚀 Starting improved photo culling process...
+📁 Input directory: ./photos
+📁 Output directory: ./culled
+🎯 Sharpness threshold: 50.0
+
+Setting up output directories in: ./culled
+  ✓ Created: selected/
+  ✓ Created: blurry/
+  ✓ Created: closed_eye/
+  ✓ Created: duplicates/
+  ✓ Created: others/
+
+Scanning for images in: ./photos
+Found 150 image files
+
+Calculating perceptual hashes for duplicate detection...
+Found 12 duplicate images
+
+Processing 150 images...
+Processed 50/150 images
+Processed 100/150 images
+Processed 150/150 images
+
+✅ Photo culling completed!
+```
+## JSON Summary Output
+```commandline
+{
+  "improved_photo_culling_summary": {
+    "input_directory": "./photos",
+    "output_directory": "./culled",
+    "sharpness_threshold": 50.0,
+    "statistics": {
+      "total_processed": 150,
+      "selected": 89,
+      "blurry": 23,
+      "closed_eye": 15,
+      "duplicates": 18,
+      "others": 5
+    },
+    "percentages": {
+      "selected": 59.3,
+      "blurry": 15.3,
+      "closed_eye": 10.0,
+      "duplicates": 12.0,
+      "others": 3.3
+    }
+  }
+}
+```
+
+## 🤝 Contributing
+
+### Bug Reports
+When reporting bugs, please include:
+- **Python version:** `python --version`
+- **Operating system:** Windows/macOS/Linux + version
+- **Package versions:** `pip list | grep -E "(opencv|mediapipe|pillow|imagehash)"`
+- **Full error message with stack trace**
+- **Command used and expected vs actual behavior**
+
+### Feature Requests
+- **Describe the use case and problem it solves**
+- **Provide example scenarios**
+- **Suggest implementation approach if you have ideas**
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgments
+
+- **OpenCV** for computer vision algorithms
+- **MediaPipe** for face and landmark detection
+- **ImageHash** for perceptual hashing
+- **Pillow** for image processing
+
+# 📸 Photo Culler
+
+**Last updated:** 2024  
+**Version:** 2.1
+
+An open-source Python tool that automatically sorts photos into folders like **selected**, **blurry**, **closed_eye**, and **duplicates**.
+Perfect for photographers who want a simple, local version of tools.
+
+...
+
+🎉 **Happy Photo Culling!**  
+
+Transform your chaotic photo collection into an organized masterpiece! 📸✨
