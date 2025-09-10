@@ -339,6 +339,18 @@ Processed 150/150 images
 }
 ```
 
+## RAW Version (Professional)
+```commandline
+# Process RAW files keeping original format
+python photo_culler_raw.py -i ./raw_photos -o ./sorted_raw -v
+
+# Convert RAW to JPEG while sorting
+python photo_culler_raw.py -i ./raw_photos -o ./sorted_jpeg --convert-to-jpeg --jpeg-quality 95
+
+# Professional workflow with high standards
+python photo_culler_raw.py -i ./shoot_photos -o ./processed --sharpness-threshold 50 --convert-to-jpeg -v
+```
+
 ## 🤝 Contributing
 
 ### Bug Reports
@@ -371,25 +383,14 @@ This project is licensed under the MIT License.
 
 # 📸 Photo Culler
 
-**Last updated:** 2024  
-**Version:** 2.1
+**Last updated:** 2025  
+**Version:** 1.0
 
 An open-source Python tool that automatically sorts photos into folders like **selected**, **blurry**, **closed_eye**, and **duplicates**.
 Perfect for photographers who want a simple, local version of tools.
 
 ...
 
-# RAW Version (Professional)
-```commandline
-# Process RAW files keeping original format
-python photo_culler_raw.py -i ./raw_photos -o ./sorted_raw -v
-
-# Convert RAW to JPEG while sorting
-python photo_culler_raw.py -i ./raw_photos -o ./sorted_jpeg --convert-to-jpeg --jpeg-quality 95
-
-# Professional workflow with high standards
-python photo_culler_raw.py -i ./shoot_photos -o ./processed --sharpness-threshold 50 --convert-to-jpeg -v
-```
 
 🎉 **Happy Photo Culling!**  
 
