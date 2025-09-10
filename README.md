@@ -151,3 +151,108 @@ python photo_culler.py -i ./photos -o ./sorted -v
 #   left eye ratio: 0.089
 #   right eye ratio: 0.102
 ```
+### ⚙️ Advanced Configuration
+## Custom Thresholds in Code
+#### Edit these values in the script for fine-tuning:
+```python
+# Eye detection sensitivity (line ~150)
+if left_ear < 0.15:  # Lower = more sensitive to closed eyes
+
+# Closed eye majority threshold (line ~280)
+if closed_ratio > 0.6:  # Lower = stricter about closed eyes
+
+# Duplicate detection sensitivity (line ~320)
+if hamming_distance <= 8:  # Lower = stricter duplicate detection
+
+# Sharpness calculation weights (line ~95)
+combined_score = (laplacian_var * 0.6 + sobel_mean * 0.4)
+```
+### Adding Custom Categories
+#### 1.Modify the categories list:
+```python
+categories = ['selected', 'blurry', 'closed_eye', 'duplicates', 'others', 'custom_category']
+```
+#### 2.Implement classification logic:
+```python
+def classify_image(self, image_path, duplicates):
+    # ... existing logic ...
+    
+    # Your custom logic
+    if your_custom_condition:
+        return 'custom_category', debug_info
+```
+### Integration Examples
+#### Shell Script Wrapper
+```bash
+#!/bin/bash
+#!/bin/bash
+# auto_cull.sh - Wrapper script for photo culling
+
+PHOTOS_DIR="\$1"
+OUTPUT_DIR="\$2"
+THRESHOLD="${3:-50}"
+
+if [ -z "$$PHOTOS_DIR" ] || [ -z "$$OUTPUT_DIR" ]; then
+    echo "Usage: \$0 <photos_directory> <output_directory> [threshold]"
+    echo "Example: \$0 ./photos ./sorted 45"
+    exit 1
+fi
+
+echo "🚀 Starting photo culling..."
+echo "📁 Input: $PHOTOS_DIR"
+echo "📁 Output: $OUTPUT_DIR"
+echo "🎯 Threshold: $THRESHOLD"
+
+python photo_culler.py \
+    -i "$PHOTOS_DIR" \
+    -o "$OUTPUT_DIR" \
+    --sharpness-threshold "$THRESHOLD" \
+    -v
+
+if [ $? -eq 0 ]; then
+    echo "✅ Culling completed successfully!"
+    echo "📊 Results:"
+    ls -la "$OUTPUT_DIR"
+else
+    echo "❌ Culling failed!"
+    exit 1
+fi
+```
+#### Python Integration
+```python
+import subprocess
+import sys
+from pathlib import Path
+
+def cull_photos(input_dir, output_dir, threshold=50.0, verbose=False):
+    """
+    Wrapper function to call photo culler from another Python script.
+    
+    Returns:
+        tuple: (success, stdout, stderr)
+    """
+    cmd = [
+        sys.executable, 'photo_culler.py',
+        '-i', str(input_dir),
+        '-o', str(output_dir),
+        '--sharpness-threshold', str(threshold)
+    ]
+    
+    if verbose:
+        cmd.append('-v')
+    
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
+        return result.returncode == 0, result.stdout, result.stderr
+    except subprocess.TimeoutExpired:
+        return False, "", "Process timed out after 1 hour"
+
+# Usage example
+if __name__ == "__main__":
+    success, output, error = cull_photos("./photos", "./sorted", threshold=45, verbose=True)
+    
+    if success:
+        print("✅ Photo culling completed!")
+    else:
+        print(f"❌ Error: {error}")
+```
